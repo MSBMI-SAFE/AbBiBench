@@ -1,6 +1,6 @@
 # 🧪 AbBiBench: Antibody Binding Benchmarking
 
-This is the code for **AbBiBench** (*Anti*body *Bi*nding *Bench*marking), a benchmarking framework for optimizing antibody binding affinity. We use experimental antibody–antigen binding affinity measurements to evaluate the performance of widely used computational models for antibody sequence engineering, including **ESM-2**, **AntiBERTy**, **CurrAb**, **SaProt**, **ProSST**, **ESM-3**, **ProGen2**, **ProtGPT2**, **ProteinMPNN**, **ESM-IF**, **Antifold**, **DiffAb**, **MEAN**, and **dyMEAN**. We also compare several commonly used physics-based metrics, such as −ΔG and −SASA.
+This is the code for **AbBiBench** (*Anti*body *Bi*nding *Bench*marking), a benchmarking framework for optimizing antibody binding affinity. We use experimental antibody–antigen binding affinity measurements to evaluate the performance of widely used computational models for antibody sequence engineering, including **ESM-2**, **AntiBERTy**, **CurrAb**, **SaProt**, **ProSST**, **ESM-3**, **ProGen2**, **ProtGPT2**, **ProteinMPNN**, **ESM-IF**, **Antifold**, **DiffAb**, **MEAN**, and **dyMEAN**. We also compare several commonly used physics-based metrics, such as **−ΔG** and **−SASA**.
 
 
 # Leaderboard
@@ -40,6 +40,9 @@ $ conda env create --name ENV_NAME --file envs/ENV_FILE.yml
 We have provided requirement files for each tools in __envs__ directory, including `diffab.yml`, `dyMEAN.yml`,
 `esmif.yml`, `MEAN_ProteinMPNN.yml`, `prosst.yml`, `SaProt.yml`
 
+# Data Resource
+📂 The dataset used in this project is publicly available on [Hugging Face Datasets](https://huggingface.co/datasets/AbBibench/Antibody_Binding_Benchmark_Dataset).
+
 # Model log-likelihood scoring
 
 ## Run the Script
@@ -67,5 +70,5 @@ This will:
 
 # Correlation to antibody-antigen binding affinity
  
-We provide a Jupyter Notebook in __notebooks/correlation_analysis.ipynb__ to reproduce our correlation results shown in Table/Figure XX.
+We provide a Jupyter Notebook in __notebooks/figure.ipynb__ to reproduce our correlation results shown in our paper.
 
