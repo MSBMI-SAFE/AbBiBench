@@ -1,0 +1,67 @@
+{
+  "1mlc": {
+    "heavy_length": 117,
+    "light_length": 109,
+    "antigen_lengths": {
+      "E": 129
+    }
+  },
+  "1n8z": {
+    "heavy_length": 121,
+    "light_length": 109,
+    "antigen_lengths": {
+      "C": 581
+    }
+  },
+  "2fjg": {
+    "heavy_length": 118,
+    "light_length": 107,
+    "antigen_lengths": {
+      "V": 95
+    }
+  },
+  "3gbn": {
+    "heavy_length": 121,
+    "light_length": 109,
+    "antigen_lengths": {
+      "A": 328,
+      "B": 173
+    }
+  },
+  "4fqi": {
+    "heavy_length": 121,
+    "light_length": 109,
+    "antigen_lengths": {
+      "A": 324,
+      "B": 176
+    }
+  },
+  "aayl49": {
+    "heavy_length": 118,
+    "light_length": 113,
+    "antigen_lengths": {
+      "A": 14
+    }
+  },
+  "aayl49_ML": {
+    "heavy_length": 118,
+    "light_length": 113,
+    "antigen_lengths": {
+      "A": 14
+    }
+  },
+  "aayl51": {
+    "heavy_length": 119,
+    "light_length": 115,
+    "antigen_lengths": {
+      "A": 14
+    }
+  },
+  "1mhp": {
+    "heavy_length": 118,
+    "light_length": 107,
+    "antigen_lengths": {
+      "A": 184
+    }
+  }
+}
