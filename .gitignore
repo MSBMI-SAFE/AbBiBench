@@ -1,0 +1,17 @@
+case_studies/
+metrics/mutant_structure/
+data/
+
+case_studies.tar.gz
+
+models/ProGen2/checkpoints/progen2-large/pytorch_model.bin
+models/ProGen2/checkpoints/progen2-large/progen2-large.tar.gz
+models/ProGen2/checkpoints/progen2-medium/pytorch_model.bin
+models/ProGen2/checkpoints/progen2-medium/progen2-medium.tar.gz
+models/ESM-IF/esm_if1_20220410.pt
+models/ProGen2/checkpoints/progen2-base/pytorch_model.bin
+models/ProGen2/checkpoints/progen2-base/progen2-base.tar.gz
+models/ProGen2/checkpoints/progen2-small/pytorch_model.bin
+models/AntiFold/model.pt
+models/ProGen2/checkpoints/progen2-small/progen2-small.tar.gz
+models/ProSST/ProSST-2048/model.safetensors

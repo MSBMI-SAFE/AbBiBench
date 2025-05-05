@@ -1,0 +1,21 @@
+mode: single_cdr
+model:
+  checkpoint: ./trained_models/fixbb.pt
+
+sampling:
+  seed: 2022
+  sample_structure: false
+  sample_sequence: true
+  cdrs:
+    - H_CDR3
+  num_samples: 1
+  optimize_steps:
+    - 1
+
+dataset:
+  test:
+    type: sabdab
+    summary_path: ./data/sabdab_summary_all.tsv
+    chothia_dir: ./data/all_structures/chothia
+    processed_dir: ./data/processed
+    split: test

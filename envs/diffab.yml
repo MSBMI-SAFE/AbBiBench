@@ -1,0 +1,22 @@
+name: diffab
+channels:
+  - defaults
+  - conda-forge
+  - bioconda
+  - pytorch
+  - nvidia
+dependencies:
+  - python=3.8.19
+  - pytorch=2.3.0
+  - torchvision=0.18.0
+  - cudatoolkit=11.8.0
+  - joblib
+  - python-lmdb
+  - tqdm
+  - easydict
+  - pyyaml
+  - tensorboard
+  - biopython=1.78
+  - abnumber=0.3.0
+  - mmseqs2
+  - pdbfixer
