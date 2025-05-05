@@ -1,9 +1,6 @@
-# Antibody-Antigen Binding Affinity Benchmark
+# 🧪 AbBiBench: Antibody Binding Benchmarking
 
-We use experimental antibody-antigen binding affinity to investigate
-the performance of widely used computational models for antibody sequence engineering, including
-**ESM-2**, **ESM-IF**, **MEAN**, **dyMEAN**, **DiffAb**, **ProteinMPNN**, **SaProt**, **ProSST**. We also compare several
-commonly used physics-based metrics, such as FoldX's ΔΔG and FreeSASA's surface area.
+This is the code for **AbBiBench** (*Anti*body *Bi*nding *Bench*marking), a benchmarking framework for optimizing antibody binding affinity. We use experimental antibody–antigen binding affinity measurements to evaluate the performance of widely used computational models for antibody sequence engineering, including **ESM-2**, **AntiBERTy**, **CurrAb**, **SaProt**, **ProSST**, **ESM-3**, **ProGen2**, **ProtGPT2**, **ProteinMPNN**, **ESM-IF**, **Antifold**, **DiffAb**, **MEAN**, and **dyMEAN**. We also compare several commonly used physics-based metrics, such as −ΔG and −SASA.
 
 
 # Leaderboard
@@ -53,7 +50,7 @@ cd ./scripts
 python eval_seq.py --model [MODEL] --data [DATA]
 
 ```
-Where MODEL ∈ { diffab, ESM-IF, ESM-2, dyMEAN, foldx, MEAN, ProteinMPNN, ProSST, sasa }, and DATA ∈ { 3gbn, 4fqi, 2fjg, aayl49, aayl49_ml, aayl51, 1mlc, 1n8z }
+Where MODEL ∈ { diffab, ESM-IF, AntiFold, ESM-2, ESM3-Open, AntiBERTy, CurrAb, dyMEAN, MEAN, ProteinMPNN, ProSST, ProGen2, ProSST, foldx, sasa }, and DATA ∈ { 3gbn, 4fqi, 2fjg, aayl49, aayl49_ml, aayl51, 1mlc, 1n8z , 1mph}
 
 ## Example
 
