@@ -1,9 +1,3 @@
-case_studies/
-metrics/mutant_structure/
-data/
-
-case_studies.tar.gz
-
 models/ProGen2/checkpoints/progen2-large/pytorch_model.bin
 models/ProGen2/checkpoints/progen2-large/progen2-large.tar.gz
 models/ProGen2/checkpoints/progen2-medium/pytorch_model.bin
