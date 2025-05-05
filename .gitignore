@@ -15,3 +15,5 @@ models/ProGen2/checkpoints/progen2-small/pytorch_model.bin
 models/AntiFold/model.pt
 models/ProGen2/checkpoints/progen2-small/progen2-small.tar.gz
 models/ProSST/ProSST-2048/model.safetensors
+models/ESM-3-Large 
+models/ESM-3-Multimer-Large
