@@ -41,7 +41,7 @@ We have provided requirement files for each tools in __envs__ directory, includi
 `esmif.yml`, `MEAN_ProteinMPNN.yml`, `prosst.yml`, `SaProt.yml`
 
 # Data Resource
-📂 The dataset used in this project is publicly available on [Hugging Face Datasets](https://huggingface.co/datasets/AbBibench/Antibody_Binding_Benchmark_Dataset).
+📂 The dataset used in this project is publicly available on [Hugging Face Datasets](https://huggingface.co/datasets/AbBibench/Antibody_Binding_Benchmark_Dataset). Please place the downloaded data in the data folder under the project root directory to ensure the program runs correctly.
 
 # Model log-likelihood scoring
 
