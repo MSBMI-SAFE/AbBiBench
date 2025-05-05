@@ -72,3 +72,154 @@ This will:
  
 We provide a Jupyter Notebook in __notebooks/figure.ipynb__ to reproduce our correlation results shown in our paper.
 
+# 🏆 Contribute to the AbBiBench Leaderboard — We Welcome Your Model and Data!
+
+We maintain a public **AbBiBench** leaderboard and **actively invite external submissions** that benchmark new models or datasets for antibody–antigen binding affinity.
+
+---
+
+
+## 🚀 Step‑by‑step guide for submitting model results
+
+1. **Fork** this repository and create a new branch:
+
+   ```bash
+   git clone https://github.com/<your_username>/AbBiBench.git
+   cd AbBiBench
+   git checkout -b leaderboard-<your_model>
+   ```
+
+2. **Add your code and results**
+
+    | Requirement | Details |
+    |-------------|---------|
+    | **Project layout** | Place all evaluation code inside **`models/<your_model>/`**. |
+    | **CLI interface** | Your main script must accept **`--name $name`** (dataset name). |
+    | **Output format** | For each mutant, write a CSV of scores to **`notebooks/scoring_outputs/`**. |
+    | **Environment** | Put any `environment.yml` or `requirements.txt` in **`envs/`**. |
+    | **Leaderboard row** | Append **one line** to `leaderboard/leaderboard.csv` (preserve column order). |
+
+3. **Commit and push**
+
+   ```bash
+   git add models/<your_model> envs/ notebooks/scoring_outputs/<file>.csv README.md
+   git commit -m "Leaderboard submission: <your_model>"
+   git push -u origin leaderboard-<your_model>
+   ```
+
+4. **Open a Pull Request** to `master`  
+
+   Title your PR:
+
+   ```
+   Leaderboard submission: <Your Model Name>
+   ```
+
+   and include the following template in the PR description:
+
+   ```markdown
+   ### Method name
+   <Your model>
+
+   ### Short description (≤ 100 words)
+   …
+
+   ### Reference
+   arXiv / DOI / blog link (optional)
+
+   ### Reproduction command
+   python models/<your_model>/run.py --name 1mhp
+   ```
+
+5. **Review and merge**  
+   We will verify your scores and code within ~7 days. Once merged, your model will appear automatically on the leaderboard.
+
+
+## 📦 Contribute Data to `AbBibench/Antibody_Binding_Benchmark_Dataset`
+
+We warmly welcome community contributions of new **antibody–antigen binding affinity datasets** to the AbBiBench benchmark on the Hugging Face Hub.  
+Data **must be shared under an open license** (CC‑BY‑4.0 or a compatible license).
+
+---
+
+
+1. **Install Git LFS and sign in to Hugging Face**
+
+   ```bash
+   conda install -c conda-forge git-lfs
+   git lfs install        # one‑time setup
+   pip install -U huggingface_hub
+   huggingface-cli login  # paste your HF access token
+   ```
+
+2. **Fork and clone the dataset repo**
+
+   ```bash
+   # Replace <username> with your HF account
+   git clone https://huggingface.co/datasets/<username>/Antibody_Binding_Benchmark_Dataset
+   cd Antibody_Binding_Benchmark_Dataset
+   git remote add upstream https://huggingface.co/datasets/AbBibench/Antibody_Binding_Benchmark_Dataset
+   git pull upstream main   # stay up to date
+   ```
+
+3. **Add your data**
+   
+   - Each **CSV inside `binding_affinity/`** must include at least:
+   
+      | column      | description                                                          |
+      |-------------|----------------------------------------------------------------------|
+      | `mut_heavy_chain_seq`  | Amino‑acid sequence for each mutant of heavy chain                                               |
+      | `binding_score`  | Experimental affinity value |
+   
+   - Place every PDB/mmCIF file inside `complex_structure/`. 
+   
+   - Each study **must** provide a `metadata.json` at the root of its folder. The file should be a **dictionary keyed by complex ID** (typically the PDB code). For each complex include the fields below:
+   
+      | key            | type / example | description |
+      |----------------|----------------|-------------|
+      | `pdb`          | `"1mhp_hla"`   | PDB identifier (or custom) |
+      | `pdb_path`     | `"./data/complex_structure/1mhp_hla.pdb"` | Relative path to the structure file |
+      | `heavy_chain`  | `"H"`          | Heavy chain ID of the antibody |
+      | `light_chain`  | `"L"`          | Light chain ID of the antibody |
+      | `antigen_chains` | `["A"]`      | Antigen chain IDs |
+      | `affinity_data`  | `["./data/binding_affinity/1mhp_benchmarking_data.csv"]` | Paths to corresponding affinity CSV files |
+      | `receptor_chains` | `["A"]`     | Chains treated as receptor in docking (if applicable) |
+      | `ligand_chains`   | `["H","L"]` | Chains treated as ligand in docking |
+      | `chain_order`     | `["H","L","A"]` | Ordering of chains in the complex file |
+      | `epitope_chain`   | `"A"`       | Chain containing the epitope residues |
+      | `paratope_chain`  | `"H"`       | Chain containing the paratope residues |
+
+
+4. **Commit and push**
+
+   ```bash
+   git checkout -b add-<your_study_name>
+   git add data/<your_dataset>.csv metadata.json
+   git commit -m "Add <your_study_name> dataset (n=1234 mutants)"
+   git push -u origin add-<your_study_name>
+   ```
+
+5. **Open a Pull Request on the HF Hub**
+
+   Use **Contribute → Pull request** on the repo page and fill out:
+
+   ```markdown
+   ### Study name
+   <your_study_name>
+
+   ### Description (≤ 100 words)
+   Short summary of the experiment, antigen, number of mutants, and assay.
+
+   ### Files added
+   - data/<your_study_name>/binding_affinity/*.csv
+   - data/<your_study_name>/complex_structure/*.pdb
+   - …
+
+   ### License
+   CC-BY-4.0
+   ```
+
+We will review your PR—checking format, license, and basic biological plausibility—within **about 7 days**. Once merged, your data will appear in the next dataset snapshot and can be used immediately by AbBiBench.
+
+
+🙏 **Thanks for contributing and helping improve antibody‑design benchmarks!**
