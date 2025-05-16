@@ -151,8 +151,8 @@ def main():
         logging.info("Loading ProGen2 model...")
 
         # models should be loaded into the checkpoints folder
-        model: ProGenForCausalLM = ProGenForCausalLM.from_pretrained(f'./models/ProGen2/checkpoints/{args.model}')
-        tokenizer: Tokenizer = create_tokenizer_custom(file='./models/ProGen2/tokenizer.json')
+        model: ProGenForCausalLM = ProGenForCausalLM.from_pretrained(f'../models/ProGen2/checkpoints/{args.model}')
+        tokenizer: Tokenizer = create_tokenizer_custom(file='../models/ProGen2/tokenizer.json')
         model.eval()
 
         if torch.cuda.is_available() and args.gpu >= 0:
