@@ -54,13 +54,13 @@ import biotite.structure.io as bsio
 
 REPO = "AbBibench/Antibody_Binding_Benchmark_Dataset"
 
-# 2. List all CSV files in the binding_affinity directory
+# 1. List all CSV files in the binding_affinity directory
 csv_files = [
     f for f in list_repo_files(REPO, repo_type="dataset")
     if f.startswith("binding_affinity/") and f.endswith("_benchmarking_data.csv")
 ]
 
-# 3. Load and concatenate all subsets
+# 2. Load and concatenate all subsets
 all_splits = []
 for csv in tqdm(csv_files, desc="Loading CSVs"):
     ds = load_dataset(REPO, data_files={ "data": csv }, split="train")
@@ -68,10 +68,10 @@ for csv in tqdm(csv_files, desc="Loading CSVs"):
 full_ds = concatenate_datasets(all_splits)
 print(full_ds)    # overview of the full dataset
 
-# 4. Filter for samples belonging to influenza H1 (3gbn_h1)
+# 3. Filter for samples belonging to influenza H1 (3gbn_h1)
 h1_ds = full_ds.filter(lambda x: x["antigen_id"].endswith("3gbn_h1"))
 
-# 5. List PDB structure files corresponding to this antigen
+# 4. List PDB structure files corresponding to this antigen
 antigen_id     = "3gbn_h1"
 base_id        = antigen_id.split("_")[0]
 structure_files = [
@@ -79,7 +79,7 @@ structure_files = [
     if f.startswith(f"structures/{base_id}") and f.endswith(".pdb")
 ]
 
-# 6. Download and parse each PDB using Biotite
+# 5. Download and parse each PDB using Biotite
 for pdb_file in structure_files:
     local_pdb = hf_hub_download(
         repo_id=REPO, filename=pdb_file, repo_type="dataset"
