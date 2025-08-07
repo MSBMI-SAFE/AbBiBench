@@ -23,8 +23,9 @@ This is the code for **AbBiBench** (*Anti*body *Bi*nding *Bench*marking), a benc
 | 15   | Biophysics        | -SASA          | -0.17 | 0.1   | 0.17  | -0.02 | -0.26   | -0.2    | -0.14    | -0.15    | 0.05   | -0.18      | 0.02   | -0.070909091   |
 | 16   | Graph Model       | MEAN_fixbb     | -0.21 | 0.02  | 0.16  | -0.18 | -0.2    | -0.04   | -0.36    | -0.21    | 0.06   | 0.02       | -0.05  | -0.09          |
 | 17   | Graph Model       | MEAN           | -0.21 | 0.02  | 0.15  | -0.18 | -0.24   | 0       | -0.6     | -0.28    | 0.07   | 0.02       | -0.05  | -0.118181818   |
-| 18   | Masked LM         | AntiBERTy      | -0.18 | -0.24 | -0.24 | 0.11  | -0.72   | -0.75   | -0.38    | -0.2     | 0.21   | -0.14      | 0.22   | -0.21          |
-| 19   | Autoregressive LM | progen2-large  | -0.38 | -0.29 | -0.21 | 0.27  | -0.76   | -0.62   | -0.45    | -0.32    | 0.26   | -0.11      | 0.2    | -0.219090909   |
+| 18   | Diffusion         | AbX           | -0.1652 | -0.2385  |0.1395   | 0.1128 |   -0.6346  |   -0.4678     | -0.5340     |  -0.3444  |  0.1653  |  0.0097      |  0.1121 | –0.1677   |
+| 19   | Masked LM         | AntiBERTy      | -0.18 | -0.24 | -0.24 | 0.11  | -0.72   | -0.75   | -0.38    | -0.2     | 0.21   | -0.14      | 0.22   | -0.21          |
+| 20   | Autoregressive LM | progen2-large  | -0.38 | -0.29 | -0.21 | 0.27  | -0.76   | -0.62   | -0.45    | -0.32    | 0.26   | -0.11      | 0.2    | -0.219090909   |
 
 Each value in this table indicates the Spearman correlation between the model's predicted log-likelihood scores and the corresponding experimental measurement from a specific antibody–antigen dataset. They are ranked according to the average Spearman correlation coefficient across multiple datasets.
 
