@@ -185,7 +185,7 @@ def get_ll_average_complex_prosst(model, tokenizer, structure_seq, residue_seq, 
 
 def main():
     parser = argparse.ArgumentParser(description="ProSST Average Log-Likelihood Benchmarking Script")
-    parser.add_argument('--name', type=str, default='3gbn', choices=['3gbn','4fqi','2fjg','aayl49','aayl49_ml','aayl51','1mlc', '1n8z', '1mhp'])
+    parser.add_argument('--name', type=str, default='3gbn', choices=['3gbn','4fqi','2fjg','aayl49','aayl49_ml','aayl51','1mlc', '1n8z', '1mhp', 'aayl50_LC', 'aayl52_LC', 'g6_LC', '5a12_vegf', '5a12_ang2', '4d5_her2', '1mhp_LC'])
     args = parser.parse_args()
 
     # Log file
@@ -208,30 +208,36 @@ def main():
 
     # Load ProSST
     logging.info("Loading ProSST model and tokenizer...")
-    prosst_model = AutoModelForMaskedLM.from_pretrained("AI4Protein/ProSST-2048", trust_remote_code=True)
-    prosst_tokenizer = AutoTokenizer.from_pretrained("AI4Protein/ProSST-2048", trust_remote_code=True)
+    # prosst_model = AutoModelForMaskedLM.from_pretrained("AI4Protein/ProSST-2048", trust_remote_code=True)
+    # prosst_tokenizer = AutoTokenizer.from_pretrained("AI4Protein/ProSST-2048", trust_remote_code=True)
+    prosst_model = AutoModelForMaskedLM.from_pretrained("./ProSST-2048", trust_remote_code=True)
+    prosst_tokenizer = AutoTokenizer.from_pretrained("./ProSST-2048", trust_remote_code=True)
     processor = PdbQuantizer()  # Used for structural quantization
     # 1. Quantize structure (assuming pdb_file corresponds to residue_seq)
     structure_seq = processor(pdb_file)  # Returns a list of integers, each representing a quantized structural token
-
+    
     # Infer chain IDs from the PDB filename
     heavy_chain_id, light_chain_id, antigen_chain_ids = infer_chain_ids(pdb_file)
     chains = [heavy_chain_id, light_chain_id] + antigen_chain_ids
 
     print("Extracting wild-type sequences from the provided PDB file.")
     wt_hc, wt_lc, wt_ag = extract_sequences_from_pdb(pdb_file, chains)
+    print(len(wt_hc), len(wt_lc), len(wt_ag))
 
     # Add these sequences to the DataFrame
     # df['wt_heavy_chain_seq'] = wt_hc
-    df['LC'] = wt_lc
+    # df['LC'] = wt_lc
     df['Target'] = wt_ag
 
     # Iterate over each record in the dataset and compute the average log-likelihood of the entire mutated sequence
     model_scores = []
     for idx, row in tqdm(df.iterrows(), total=df.shape[0], desc="Processing rows"):
-        mutated_hc = row['mut_heavy_chain_seq'].replace(';', '').upper()
-        mutated_lc = row['LC'].replace(';', '').upper()  # How to retrieve this; the current data format no longer provides it
-        mutated_ag = row['Target'].replace(';', '').upper()  # How to retrieve this; the current data format no longer provides it
+        # mutated_hc = row['mut_heavy_chain_seq'].replace(';', '').upper()
+        # mutated_lc = row['LC'].replace(';', '').upper() 
+        mutated_hc = row['heavy_chain_seq'].replace(';', '').upper()
+        # mutated_hc = mutated_hc[:128]+mutated_hc[132:]
+        mutated_lc = row['light_chain_seq'].replace(';', '').upper()
+        mutated_ag = row['Target'].replace(';', '').upper()
         # Concatenate HC + LC + antigen to form the complete mutated sequence
         mutated_full_seq = mutated_hc + mutated_lc + mutated_ag
 
@@ -250,7 +256,7 @@ def main():
             model_scores.append(None)
 
     # Write the results into a new column, for example named "ProSST_joint_ll_average"
-    df['ProSST_joint_ll_average'] = model_scores
+    df['log-likelihood'] = model_scores
 
     # Output to Excel
     try:

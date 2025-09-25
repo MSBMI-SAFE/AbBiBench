@@ -23,6 +23,8 @@ def parse_args():
                         help="Directory to store output CSVs")
     parser.add_argument("--checkpoint", default="./models/AntiFold/model.pt",
                         help="Path to the model checkpoint file")
+    parser.add_argument("--scoring_cols", type=str, nargs="+", default=["heavy_chain_seq", "light_chain_seq"],
+                        help="Specify one or more columns containing mutatedsequences for scoring.")  
     args = parser.parse_args()
     
     return args
@@ -157,10 +159,10 @@ def main():
                 problematic_pdbs.append(pdb_file)
                 continue
 
-            mutated_heavy_chain_seq = row.get('mut_heavy_chain_seq', None)
+            mutated_heavy_chain_seq = row.get('heavy_chain_seq', None)
             native_heavy_seq = native_seqs[heavy_chain]
             if not mutated_heavy_chain_seq:
-                print(f"Row {idx}: No 'mut_heavy_chain_seq' found in CSV. Skipping.")
+                print(f"Row {idx}: No 'heavy_chain_seq' found in CSV. Skipping.")
                 problematic_pdbs.append(pdb_file)
                 continue
 
@@ -169,20 +171,38 @@ def main():
                       f"Native: {len(native_heavy_seq)}, Mutated: {len(mutated_heavy_chain_seq)}")
                 problematic_pdbs.append(pdb_file)
                 continue
+            
+            #NEW: add light chain check
+            if light_chain not in native_seqs:
+                print(f"Row {idx}: Light chain '{light_chain}' not found in PDB. Skipping.")
+                problematic_pdbs.append(pdb_file)
+                continue
 
-            # Build mutated sequences dict
-            mutated_seqs = {heavy_chain: mutated_heavy_chain_seq}
-            # Keep the native sequence for the other chains
-            if light_chain in native_seqs:
-                mutated_seqs[light_chain] = native_seqs[light_chain]
-            else:
-                print(f"Row {idx}: Light chain '{light_chain}' not found; skipping adding it.")
+            mutated_light_chain_seq = row.get('light_chain_seq', None)
+            native_light_seq = native_seqs[light_chain]
+            if not mutated_light_chain_seq:
+                print(f"Row {idx}: No 'light_chain_seq' found in CSV. Skipping.")
+                problematic_pdbs.append(pdb_file)
+                continue
+
+            if len(mutated_light_chain_seq) != len(native_light_seq):
+                print(f"Row {idx}: Sequence length mismatch for light chain. "
+                    f"Native: {len(native_light_seq)}, Mutated: {len(mutated_light_chain_seq)}")
+                problematic_pdbs.append(pdb_file)
+                continue
+
+            #NEW: Build mutated sequences dict (heavy + light)
+            mutated_seqs = {
+                heavy_chain: mutated_heavy_chain_seq,
+                light_chain: mutated_light_chain_seq
+            }
+
+            #NEW: add antigen chains (native)
             for a_chain in antigen_chains:
                 if a_chain in native_seqs:
                     mutated_seqs[a_chain] = native_seqs[a_chain]
                 else:
                     print(f"Row {idx}: Antigen chain '{a_chain}' not found; skipping adding it.")
-
             # Score
             try:
                 ll_complex = score_sequence_in_complex_(
@@ -190,7 +210,7 @@ def main():
                     mutated_seqs,
                     coords,
                     order=chain_order,
-                    target_chain_ids=[heavy_chain]  # Only heavy chain is mutated
+                    target_chain_ids=[heavy_chain, light_chain]  #NEW: heavy and light are mutated
                 )
             except AssertionError as e:
                 print(f"Row {idx}: AssertionError during scoring: {e}")
@@ -203,12 +223,12 @@ def main():
 
             df.at[idx, 'log-likelihood'] = ll_complex
 
-        # Optionally drop rows missing required columns (like your original script)
-        required_columns = ['log-likelihood', 'binding_score', 'mut_heavy_chain_seq']
-        filtered_df = df.dropna(subset=required_columns).copy()
+        # # Optionally drop rows missing required columns (like your original script)
+        # required_columns = ['log-likelihood', 'binding_score', 'mut_heavy_chain_seq']
+        # filtered_df = df.dropna(subset=required_columns).copy()
 
         # Save the results
-        filtered_df.to_csv(output_file, index=False)
+        df.to_csv(output_file, index=False)
         print(f"Saved results to {output_file}")
 
         if problematic_pdbs:

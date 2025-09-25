@@ -14,4 +14,6 @@ models/ESM-3-Multimer-Large
 
 models/SaProt/bin/foldseek
 
-models/AntiBERTy/antiberty/*.pyc
+models/AntiBERTy/antiberty/model/__pycache__/*.pyc
+models/AntiBERTy/antiberty/utils/__pycache__/*.pyc
+models/AntiBERTy/antiberty/__pycache__/*.pyc

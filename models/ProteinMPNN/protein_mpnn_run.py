@@ -63,9 +63,14 @@ def main(args):
     omit_AAs_list = args.omit_AAs
     alphabet = 'ACDEFGHIKLMNPQRSTVWYX'
     alphabet_dict = dict(zip(alphabet, range(21)))    
-    print_all = args.suppress_print == 0 
+    print_all = args.suppress_print == 0
     omit_AAs_np = np.array([AA in omit_AAs_list for AA in alphabet]).astype(np.float32)
-    device = torch.device(f"cuda:{args.gpu}" if (torch.cuda.is_available()) else "cpu")
+    
+    if torch.cuda.is_available() and args.gpu >= 0:
+        device = torch.device(f"cuda:{args.gpu}")
+    else:
+        device = torch.device("cpu")
+
     if os.path.isfile(args.chain_id_jsonl):
         with open(args.chain_id_jsonl, 'r') as json_file:
             json_list = list(json_file)
@@ -420,7 +425,7 @@ if __name__ == "__main__":
     argparser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     argparser.add_argument("--suppress_print", type=int, default=0, help="0 for False, 1 for True")
-    argparser.add_argument("--gpu", type=int, default=0, help="0 for cuda:0")
+    argparser.add_argument("--gpu", type=int, default=-1, help="0 for cuda:0")
 
   
     argparser.add_argument("--ca_only", action="store_true", default=False, help="Parse CA-only structures and use CA-only models (default: false)")   

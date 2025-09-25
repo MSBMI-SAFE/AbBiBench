@@ -93,8 +93,19 @@ def main(args):
         coords, native_seqs = extract_coords_from_complex(structure)
 
         mutated_seqs = {}
-        mutated_seqs[heavy_chain_id] = row['mut_heavy_chain_seq']
-        mutated_seqs[light_chain_id] = native_seqs[light_chain_id]
+
+        if 'mut_heavy_chain_seq' in row:
+            mut_heavy_chain_seq = row['mut_heavy_chain_seq']
+        else:
+            mut_heavy_chain_seq = row['heavy_chain_seq']
+
+        if 'light_chain_seq' in row:
+            mut_light_chain_seq = row['light_chain_seq']
+        else:
+            mut_light_chain_seq = native_seqs[light_chain_id]
+
+        mutated_seqs[heavy_chain_id] = mut_heavy_chain_seq #row['mut_heavy_chain_seq']
+        mutated_seqs[light_chain_id] = mut_light_chain_seq #native_seqs[light_chain_id]
         for c in antigen_chains:
             mutated_seqs[c] = native_seqs[c]
 

@@ -21,6 +21,8 @@ def parse_args():
                         help="Which GPU to use; set -1 for CPU")
     parser.add_argument("--output_dir", default="./notebooks/scoring_outputs",
                         help="Directory to store output CSVs")
+    parser.add_argument("--scoring_cols", type=str, nargs="+", default=["heavy_chain_seq", "light_chain_seq"],
+                        help="Specify one or more columns containing mutatedsequences for scoring.")
     args = parser.parse_args()
     return args
 
@@ -161,21 +163,25 @@ def main():
         logging.info(f"Loaded {len(df)} rows from '{csv_path}'")
 
         # Check for column that has the mutated heavy chain
-        if "mut_heavy_chain_seq" not in df.columns:
-            logging.warning(f"No 'mut_heavy_chain_seq' column in {csv_path}; skipping.")
-            continue
+        # if "mut_heavy_chain_seq" not in df.columns:
+        #     logging.warning(f"No 'mut_heavy_chain_seq' column in {csv_path}; skipping.") #NEW: commented out since column having mutated is specified at input
+        #     continue
 
         results = []
 
         # For each variant:
         for idx, row in tqdm(df.iterrows(), total=len(df), desc=f"Scoring {csv_path}"):
-            mutated_heavy_chain_seq = row["mut_heavy_chain_seq"]
+            mutated_heavy_chain_seq = row[args.scoring_cols[0]] # row["mut_heavy_chain_seq"]
+            mutated_light_chain_seq = row[args.scoring_cols[1]] #NEW added mutated light chain
             # Basic check
-            if not isinstance(mutated_heavy_chain_seq, str) or len(mutated_heavy_chain_seq) == 0:
+            def is_valid_seq(seq):
+                return isinstance(seq, str) and len(seq) > 0
+            
+            if not (is_valid_seq(mutated_heavy_chain_seq) and is_valid_seq(mutated_light_chain_seq)):
                 results.append(None)
                 continue
 
-            mutated_complex_seq = mutated_heavy_chain_seq + wt_lc + wt_ag
+            mutated_complex_seq = mutated_heavy_chain_seq + mutated_light_chain_seq + wt_ag #NEW: mutated heavy AND light chain
 
             try:
                 ll_score = get_ll_full_complex(model, tokenizer, mutated_complex_seq)
