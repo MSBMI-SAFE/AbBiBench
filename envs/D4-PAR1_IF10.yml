@@ -1,0 +1,6 @@
+name: d4-par1-if10
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.10
+  - pandas
