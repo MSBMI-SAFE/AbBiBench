@@ -1,38 +1,47 @@
 # 🧪 AbBiBench: Antibody Binding Benchmarking
 
-This is the code for **AbBiBench** (*Anti*body *Bi*nding *Bench*marking), a benchmarking framework for optimizing antibody binding affinity. We use experimental antibody–antigen binding affinity measurements to evaluate the performance of widely used computational models for antibody sequence engineering, including **ESM-2**, **AntiBERTy**, **CurrAb**, **SaProt**, **ProSST**, **ESM-3**, **ProGen2**, **ProtGPT2**, **ProteinMPNN**, **ESM-IF**, **Antifold**, **DiffAb**, **MEAN**, **dyMEAN**, **AF3**, and **Boltz-2**. We also compare several commonly used physics-based metrics, such as **−ΔG** and **−SASA**.
+This is the code for **AbBiBench** (*Anti*body *Bi*nding *Bench*marking), a benchmarking framework for optimizing antibody binding affinity. We use experimental antibody–antigen binding affinity measurements to evaluate the performance of widely used computational models for antibody sequence engineering, including **ESM-2**, **AntiBERTy**, **CurrAb**, **SaProt**, **ProSST**, **ESM-3**, **ProGen2**, **ProtGPT2**, **ProteinMPNN**, **ESM-IF**, **Antifold**, **DiffAb**, **MEAN**, **dyMEAN**, **AF3**, **Boltz-2**, **ESMFold2**, and **ESMDance**. We also compare several commonly used physics-based metrics, such as **−ΔG** and **−SASA**.
 
 
 # Leaderboard
-| Rank | Model Type           | Model               | 1mhp  | 1mlc  | 1n8z  | 2fjg  | 3gbn_h1 | 3gbn_h9 | 4fqi_h1 | 4fqi_h3 | 4d5_her2 | 5a12_ang2 | 5a12_vegf | aayl50 | aayl49 | aayl49_ML | aayl51 | aayl52 | Avg. Spearman ↑ |
-|------|----------------------|---------------------|-------|-------|-------|-------|---------|---------|---------|---------|----------|-----------|-----------|--------|--------|-----------|--------|--------|----------------|
-| 🥇 1 | Inverse Folding      | ProteinMPNN         | -0.02 | -0.21 | -0.17 | 0.46  | 0.59    | 0.64    | 0.61    | 0.42    | 0.32     | 0.13      | 0.54      | 0.19   | 0.40   | 0.34      | 0.32   | 0.23   | 0.30           |
-| 🥈 2 | Inverse Folding      | ESMIF1              | 0.01  | -0.31 | -0.11 | 0.49  | 0.59    | 0.54    | 0.65    | 0.49    | 0.40     | 0.13      | 0.24      | 0.14   | 0.39   | 0.27      | 0.34   | 0.25   | 0.28           |
-| 🥉 3 | Inverse Folding      | Antifold            | -0.02 | -0.31 | 0.16  | 0.41  | 0.12    | 0.27    | 0.42    | 0.37    | 0.34     | 0.18      | 0.21      | 0.07   | 0.39   | 0.14      | 0.32   | 0.24   | 0.21           |
-| 4    | Structure Prediction | Boltz-2             | -0.22 | 0.02  | -0.06 | 0.08  | 0.71    | 0.56    | 0.40    | 0.27    | 0.03     | -0.02     | 0.31      | -0.02  | 0.02   | 0.02      | 0.05   | -0.04  | 0.13           |
-| 5    | Biophysics           | FoldX               | -0.02 | 0.02  | -0.28 | -0.02 | 0.59    | 0.32    | 0.64    | 0.29    | 0.01     | -0.04     | 0.11      | -0.02  | -0.01  | 0.24      | 0.07   | 0.09   | 0.12           |
-| 6    | Diffusion            | diffab              | 0.24  | 0.01  | -0.02 | -0.01 | 0.67    | 0.61    | 0.00    | -0.01   | -0.01    | 0.03      | 0.00      | 0.02   | 0.15   | 0.00      | 0.03   | 0.01   | 0.11           |
-| 7    | Diffusion            | diffab_fixbb        | -0.09 | 0.01  | 0.04  | -0.02 | 0.54    | 0.76    | 0.00    | 0.00    | -0.01    | 0.02      | 0.01      | 0.00   | 0.18   | -0.01     | 0.19   | 0.00   | 0.10           |
-| 8    | Masked LM            | CurrAb              | 0.12  | 0.11  | -0.39 | 0.14  | 0.16    | 0.23    | 0.19    | 0.13    | 0.14     | 0.05      | 0.03      | 0.01   | 0.03   | 0.20      | 0.04   | 0.01   | 0.07           |
-| 9    | Masked LM            | ESM3-Open-structure | 0.06  | -0.28 | -0.12 | 0.17  | -0.24   | -0.22   | -0.20   | 0.03    | 0.25     | 0.16      | 0.13      | 0.09   | 0.39   | 0.12      | 0.26   | 0.22   | 0.05           |
-| 10   | Masked LM            | SaProt              | -0.15 | 0.25  | 0.11  | -0.21 | 0.53    | 0.60    | 0.48    | 0.28    | -0.34    | -0.08     | -0.14     | -0.11  | -0.27  | 0.11      | -0.17  | -0.27  | 0.04           |
-| 11   | Masked LM            | ESM2                | 0.20  | 0.06  | -0.13 | 0.14  | 0.23    | 0.38    | -0.02   | -0.02   | -0.20    | -0.07     | 0.20      | -0.03  | -0.04  | -0.14     | -0.11  | -0.16  | 0.02           |
-| 12   | Graph Model          | dyMEAN_fixbb        | 0.15  | 0.01  | 0.00  | -0.02 | -0.02   | 0.00    | 0.04    | 0.02    | -0.02    | -0.01     | 0.02      | -0.01  | 0.02   | 0.02      | -0.02  | 0.02   | 0.01           |
-| 13   | Autoregressive LM    | ProtGPT2            | 0.14  | -0.21 | 0.15  | 0.17  | -0.39   | -0.18   | -0.20   | 0.00    | 0.05     | 0.08      | 0.18      | 0.02   | 0.06   | 0.05      | 0.10   | -0.06  | 0.00           |
-| 14   | Masked LM            | ProSST              | 0.09  | 0.02  | -0.26 | 0.08  | -0.30   | -0.07   | -0.07   | 0.10    | 0.07     | 0.16      | -0.06     | -0.02  | 0.13   | -0.01     | 0.11   | -0.03  | 0.00           |
-| 15   | Graph Model          | dyMEAN              | -0.08 | 0.02  | 0.00  | 0.01  | -0.02   | -0.02   | 0.03    | 0.02    | 0.03     | 0.01      | 0.01      | -0.02  | -0.03  | -0.01     | -0.03  | 0.00   | -0.01          |
-| 16   | Graph Model          | MEAN_fixbb          | -0.07 | 0.01  | 0.16  | -0.12 | -0.20   | -0.04   | -0.36   | -0.21   | 0.06     | 0.02      | 0.34      | 0.01   | 0.06   | 0.02      | -0.05  | 0.02   | -0.02          |
-| 17   | Structure Prediction | AF3                 | -0.54 | -0.17 | -0.16 | 0.09  | -0.05   | 0.13    | 0.05    | 0.05    | 0.02     | -0.11     | -0.01     | -0.01  | 0.23   | 0.00      | 0.07   | 0.01   | -0.02          |
-| 18   | Biophysics           | epitopeSA           | 0.08  | 0.09  | 0.17  | 0.02  | -0.26   | -0.20   | -0.14   | -0.15   | 0.00     | -0.03     | 0.12      | 0.01   | 0.05   | -0.18     | 0.02   | -0.18  | -0.04          |
-| 19   | Graph Model          | MEAN                | 0.01  | 0.01  | 0.15  | -0.12 | -0.24   | 0.00    | -0.60   | -0.28   | 0.02     | 0.01      | 0.16      | 0.02   | 0.07   | 0.02      | -0.05  | 0.02   | -0.05          |
-| 20   | Autoregressive LM    | progen2-large       | -0.01 | -0.28 | -0.21 | 0.26  | -0.76   | -0.62   | -0.45   | -0.32   | 0.07     | 0.15      | 0.09      | 0.11   | 0.26   | -0.11     | 0.20   | 0.20   | -0.09          |
-| 21   | Masked LM            | AntiBERTy           | 0.04  | -0.13 | -0.24 | 0.01  | -0.72   | -0.75   | -0.38   | -0.20   | 0.13     | 0.17      | 0.02      | 0.04   | 0.21   | -0.14     | 0.22   | 0.01   | -0.11          |
-<!-- | -    | Biophysics           | ANTIPASTI           | -0.18 | -0.05 | -0.43 | -     | -       | -       | -       | -       | -        | -         | -         | -      | 0.07   | -         | -0.01  | -      | -              |
-| -    | Diffusion            | AbX                 | -0.16 | -0.24 | 0.14  | 0.11  | -0.63   | -0.47   | -0.53   | -0.34   | -        | -         | -         | -      | 0.16   | 0.01      | 0.11   | -      | -              | -->
 
+**Manuscript-matched snapshot — 19 October 2026.** This table covers 20 base methods / 23 evaluated implementations across 16 assays. It includes **ESMFold2 (ipSAE)** and **ESMDance**, and updates **AF3** and **Boltz-2** to the manuscript's primary **ipSAE** score.
 
+Values are the **two-decimal Spearman correlations reported in manuscript Figure 3a**, not a rerun of the models. Each assay is evaluated separately; direct affinity and enrichment measurements are not pooled onto one quantitative scale. Structural confidence scores are affinity-ranking proxies, not calibrated affinity estimates. See [score definitions, structural inputs and provenance](leaderboard/README.md), [downloadable reported correlations](leaderboard/manuscript_spearman.csv), and [source metadata](leaderboard/provenance.json).
 
-Each value in this table indicates the Spearman correlation between the model's predicted log-likelihood scores and the corresponding experimental measurement from a specific antibody–antigen dataset. They are ranked according to the average Spearman correlation coefficient across multiple datasets.
+**Reproduction status:** the new ipSAE/ESMDance runners and underlying per-variant result files are not yet present in this public repository. Existing score files predate this snapshot. The proposed experimental-versus-predicted-template sensitivity analyses have not been performed as part of this leaderboard update.
+
+<!-- manuscript-leaderboard:start -->
+| Rank¹ | Model Type | Model / score | 1mhp | 1mlc | 1n8z | 2fjg | 3gbn_h1 | 3gbn_h9 | 4fqi_h1 | 4fqi_h3 | 4d5_her2 | 5a12_ang2 | 5a12_vegf | aayl50 | aayl49 | aayl49_ML | aayl51 | aayl52 | Approx. mean ρ² ↑ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | Inverse Folding | ProteinMPNN | -0.02 | -0.32 | -0.17 | 0.46 | 0.59 | 0.64 | 0.61 | 0.42 | 0.32 | 0.13 | 0.54 | 0.19 | 0.40 | 0.34 | 0.32 | 0.23 | 0.29 |
+| 2 | Inverse Folding | ESM-IF1 | 0.01 | -0.37 | -0.11 | 0.49 | 0.59 | 0.54 | 0.65 | 0.49 | 0.40 | 0.13 | 0.24 | 0.14 | 0.39 | 0.27 | 0.34 | 0.25 | 0.28 |
+| 3 | Inverse Folding | AntiFold | -0.02 | -0.44 | 0.16 | 0.41 | 0.12 | 0.27 | 0.42 | 0.37 | 0.34 | 0.18 | 0.21 | 0.07 | 0.39 | 0.14 | 0.32 | 0.24 | 0.20 |
+| 4 | Structure Prediction | Boltz-2 (ipSAE) | -0.22 | 0.03 | -0.01 | 0.08 | 0.69 | 0.55 | 0.50 | 0.33 | 0.02 | -0.02 | 0.35 | -0.03 | 0.04 | 0.00 | 0.03 | -0.07 | 0.14 |
+| 5 | Biophysics | FoldX (−ΔΔG) | -0.02 | 0.02 | -0.28 | -0.02 | 0.59 | 0.32 | 0.64 | 0.29 | 0.01 | -0.04 | 0.11 | -0.02 | -0.01 | 0.24 | 0.07 | 0.09 | 0.12 |
+| 6 | Diffusion | diffab | 0.24 | 0.01 | -0.02 | -0.01 | 0.67 | 0.61 | 0.00 | -0.01 | -0.01 | 0.03 | 0.00 | 0.02 | 0.15 | 0.00 | 0.03 | 0.01 | 0.11 |
+| 7 | Diffusion | diffab_fixbb | -0.09 | 0.01 | 0.04 | -0.02 | 0.54 | 0.76 | 0.00 | 0.00 | -0.01 | 0.02 | 0.01 | 0.00 | 0.18 | -0.01 | 0.19 | 0.00 | 0.10 |
+| 8 | Masked LM | CurrAb | 0.12 | 0.09 | -0.39 | 0.14 | 0.16 | 0.23 | 0.19 | 0.13 | 0.14 | 0.05 | 0.03 | 0.01 | 0.03 | 0.20 | 0.04 | 0.01 | 0.07 |
+| 9 | Biophysics | ESMDance | -0.06 | -0.38 | 0.16 | 0.55 | 0.20 | -0.14 | 0.40 | -0.15 | -0.35 | 0.03 | 0.08 | 0.11 | 0.29 | -0.09 | 0.21 | 0.07 | 0.06 |
+| 10 | Masked LM | ESM-3 | 0.06 | -0.31 | -0.12 | 0.17 | -0.24 | -0.22 | -0.20 | 0.03 | 0.25 | 0.16 | 0.13 | 0.09 | 0.39 | 0.12 | 0.26 | 0.22 | 0.05 |
+| 11 | Masked LM | SaProt | -0.15 | 0.25 | 0.11 | -0.21 | 0.53 | 0.60 | 0.48 | 0.28 | -0.34 | -0.08 | -0.14 | -0.11 | -0.27 | 0.11 | -0.17 | -0.27 | 0.04 |
+| 12 | Structure Prediction | ESMFold2 (ipSAE) | -0.15 | -0.03 | 0.14 | -0.05 | 0.21 | 0.19 | 0.07 | -0.05 | 0.07 | -0.04 | -0.12 | 0.03 | 0.12 | 0.06 | 0.08 | 0.05 | 0.04 |
+| 13 | Masked LM | ESM-2 | 0.20 | 0.05 | -0.13 | 0.14 | 0.23 | 0.38 | -0.02 | -0.02 | -0.20 | -0.07 | 0.20 | -0.03 | -0.04 | -0.14 | -0.11 | -0.16 | 0.02 |
+| 14 | Graph Model | dyMEAN_fixbb | 0.15 | 0.01 | 0.00 | -0.02 | -0.02 | 0.00 | 0.04 | 0.02 | -0.02 | -0.01 | 0.02 | -0.01 | 0.02 | 0.02 | -0.02 | 0.02 | 0.01 |
+| 15 | Autoregressive LM | ProtGPT-2 | 0.14 | -0.21 | 0.15 | 0.17 | -0.39 | -0.18 | -0.20 | 0.00 | 0.05 | 0.08 | 0.18 | 0.02 | 0.06 | 0.05 | 0.10 | -0.06 | -0.00 |
+| 16 | Masked LM | ProSST | 0.09 | 0.02 | -0.26 | 0.08 | -0.30 | -0.07 | -0.07 | 0.10 | 0.07 | 0.16 | -0.06 | -0.02 | 0.13 | -0.01 | 0.11 | -0.03 | -0.00 |
+| 17 | Graph Model | dyMEAN | -0.08 | 0.02 | 0.00 | 0.01 | -0.02 | -0.02 | 0.03 | 0.02 | 0.03 | 0.01 | 0.01 | -0.02 | -0.03 | -0.01 | -0.03 | 0.00 | -0.00 |
+| 18 | Graph Model | MEAN_fixbb | -0.07 | 0.01 | 0.16 | -0.12 | -0.20 | -0.04 | -0.36 | -0.21 | 0.06 | 0.02 | 0.34 | 0.01 | 0.06 | 0.02 | -0.05 | 0.02 | -0.02 |
+| 19 | Structure Prediction | AF3 (ipSAE) | -0.55 | -0.13 | -0.05 | 0.00 | -0.10 | 0.07 | 0.01 | 0.03 | -0.01 | -0.11 | -0.02 | -0.01 | 0.21 | 0.04 | 0.06 | 0.01 | -0.03 |
+| 20 | Biophysics | FreeSASA (−ΔSASA) | 0.08 | 0.09 | 0.17 | 0.02 | -0.26 | -0.20 | -0.14 | -0.15 | 0.00 | -0.03 | 0.12 | 0.01 | 0.05 | -0.18 | 0.02 | -0.18 | -0.04 |
+| 21 | Graph Model | MEAN | 0.01 | 0.01 | 0.15 | -0.12 | -0.24 | 0.00 | -0.60 | -0.28 | 0.02 | 0.01 | 0.16 | 0.02 | 0.07 | 0.02 | -0.05 | 0.02 | -0.05 |
+| 22 | Autoregressive LM | progen2-large | -0.01 | -0.28 | -0.21 | 0.26 | -0.76 | -0.62 | -0.45 | -0.32 | 0.07 | 0.15 | 0.09 | 0.11 | 0.26 | -0.11 | 0.20 | 0.20 | -0.09 |
+| 23 | Masked LM | AntiBERTy | 0.04 | -0.09 | -0.24 | 0.01 | -0.72 | -0.75 | -0.38 | -0.20 | 0.13 | 0.17 | 0.02 | 0.04 | 0.21 | -0.14 | 0.22 | 0.01 | -0.10 |
+<!-- manuscript-leaderboard:end -->
+
+¹ Rank follows the manuscript’s Figure 3b ordering. Rounded displayed means can tie.
+² Approximate arithmetic mean across the 16 assays, recalculated from the two-decimal Figure 3a labels. These means can differ from estimates calculated from unrounded results; no confidence intervals are reconstructed.
+
 
 # Installation
 
@@ -121,7 +130,7 @@ This will:
 
 # Correlation to antibody-antigen binding affinity
  
-We provide a Jupyter Notebook in __notebooks/figure.ipynb__ to reproduce our correlation results shown in our paper.
+The current leaderboard is generated from the reported manuscript correlations with `python3 scripts/update_leaderboard.py`; run `python3 scripts/update_leaderboard.py --check` to verify synchronization. See [`leaderboard/README.md`](leaderboard/README.md) for the available data and reproduction limitations.
 
 # 🏆 Contribute to the AbBiBench Leaderboard — We Welcome Your Model and Data!
 
@@ -148,7 +157,7 @@ We maintain a public **AbBiBench** leaderboard and **actively invite external su
     | **CLI interface** | Your main script must accept **`--name $name`** (dataset name). |
     | **Output format** | For each mutant, write a CSV of scores to **`notebooks/scoring_outputs/`**. |
     | **Environment** | Put any `environment.yml` or `requirements.txt` in **`envs/`**. |
-    | **Leaderboard row** | Append **one line** to `leaderboard/leaderboard.csv` (preserve column order). |
+    | **Leaderboard results** | Provide per-assay results, score definitions and coverage. The current manuscript snapshot and update instructions are in [`leaderboard/README.md`](leaderboard/README.md). |
 
 3. **Commit and push**
 
